@@ -22,6 +22,4 @@
      shell: RUN_AS_USER=root /opt/nexus-2.14.16-01/bin/nexus start
      register: result
 
-   - debug:
-        var: result
-        verbosity: 2
+   - debug: var=result.stdout
