@@ -1,0 +1,41 @@
+---
+   - name: Download SonarQube binaries
+     get_url:
+      url: "{{ sonar_download_url }}"
+      dest: "{{ sonar_install_directory }}"
+     become: yes
+     
+   - name: "Expand SonarQube binaries"
+     unarchive:
+        src: "{{sonar_install_directory}}/{{sonar_archive}}"
+        dest: "{{sonar_install_directory}}"
+        copy: no
+
+   - name: "Remove SonarQube archive"
+     file:
+        path: "{{sonar_install_directory}}/{{sonar_archive}}"
+        state: absent  
+
+   - name: Provide full permissions to sonarqube
+     file:
+       path: "{{sonarqube}}"
+       state: directory
+       recurse: yes
+       owner: "{{sonar_user}}"
+       group: "{{sonar_group}}"
+       mode: 0777
+     tags:
+     - permission
+
+   - name: Running SonarQube
+     shell: sh sonar.sh start
+     become_user: ansadm
+     args:
+        chdir: "{{sonar_daemon_dir}}"
+     register: status
+     tags:
+     - Running
+
+   - debug: var=status.stdout
+     tags:
+     - Running

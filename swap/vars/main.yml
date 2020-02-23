@@ -1,0 +1,7 @@
+---
+# vars file for swap
+input_file: /dev/zero
+output_file: /mnt/swapfile
+swap_file: /etc/fstab
+bytes: 1024
+count: 4097152

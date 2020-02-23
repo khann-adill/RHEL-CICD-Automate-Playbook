@@ -1,0 +1,40 @@
+---
+   - name: Downloading Tomcat
+     get_url:
+         url: "{{tomcat_url}}"
+         dest: "{{tomcat_dest}}"
+
+   - name: Extracting downloaded tomcat
+     unarchive:
+         src: "{{tomcat_dest}}/apache-tomcat-{{tomcat_version}}.tar.gz"
+         dest: "{{tomcat_dest}}"
+         remote_src: yes
+
+   - name: Replacing Port of Tomcat
+     template:
+           src: server.xml.j2
+           dest: /opt/apache-tomcat-9.0.31/conf/server.xml
+
+   - name: Replacing tomcat user file
+     template:
+           src: tomcat-users.xml.j2
+           dest: /opt/apache-tomcat-9.0.31/conf/tomcat-users.xml
+
+   - name: Replacing context.xml file
+     template:
+           src: context.xml.j2
+           dest: /opt/apache-tomcat-9.0.31/webapps/manager/META-INF/context.xml
+
+   - name: Starting Tomcat
+     shell: nohup sh startup.sh &
+     args:
+       chdir: "{{tomcat_dest}}apache-tomcat-{{tomcat_version}}/bin/"
+     become: yes
+     register: status
+     tags:
+     - Running
+
+   - debug: var=status.stdout
+     tags:
+     - Running
+

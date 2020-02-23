@@ -1,0 +1,3 @@
+---
+nexus_url: http://www.sonatype.org/downloads/nexus-latest-bundle.zip
+Download_folder: /opt
