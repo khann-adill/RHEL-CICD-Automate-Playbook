@@ -1,0 +1,5 @@
+---
+- hosts: client2
+  become: yes
+  roles:
+  - jdk
