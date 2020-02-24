@@ -1,5 +1,0 @@
----
-- hosts: client2
-  become: yes
-  roles:
-    - nexus
