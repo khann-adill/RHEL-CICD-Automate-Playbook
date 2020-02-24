@@ -6,4 +6,4 @@
   hosts: "{{host}}"
   become: yes
   roles:
-  - mvn
+  - maven
