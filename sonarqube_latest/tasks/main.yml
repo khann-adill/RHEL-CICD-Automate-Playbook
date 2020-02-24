@@ -1,4 +1,9 @@
 ---
+   - name: Download Zip and Wget.
+     yum:
+       name: [wget, zip]
+       state: present
+
    - name: Download SonarQube Binaries
      get_url:
       url: "{{ sonar_download_url }}"
