@@ -1,0 +1,5 @@
+---
+- hosts: client2    #Change the host name
+  become: yes
+  roles:
+  - swap
