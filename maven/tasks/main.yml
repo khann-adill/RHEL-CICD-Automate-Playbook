@@ -7,13 +7,18 @@
 
    - name: 3.Renaming the maven unzip folder.
      command: cp -r {{ maven_home_parent_directory }}/apache-maven-{{ maven_version }} /opt/maven
+     
+   - name: 4.Removing the Maven Tar file.
+     file:
+       path: {{Download_folder}}/nexus-{{nexus_version}}-bundle.zip
+       state: absent
 
-   - name: 4.Setting path for maven
+   - name: 5.Setting path for maven
      blockinfile:
         path: /etc/profile
         block: |
           export M2_HOME=/opt/maven 
           export PATH=${M2_HOME}/bin:${PATH}
 
-   - name: 5.Source the /etc/profile
+   - name: 6.Source the /etc/profile
      shell: "source /etc/profile"
