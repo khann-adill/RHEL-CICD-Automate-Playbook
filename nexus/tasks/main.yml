@@ -18,6 +18,11 @@
        dest: /opt
        remote_src: yes 
        
+   - name: "Remove Nexus Archive"
+     file:
+        path: "{{Download_folder}}/nexus-{{nexus_version}}-bundle.zip"
+        state: absent  
+       
    - name: Now running nexus.
      shell: RUN_AS_USER=root /opt/nexus-{{nexus_version}}/bin/nexus start
      register: result
