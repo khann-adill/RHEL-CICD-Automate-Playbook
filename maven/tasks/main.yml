@@ -6,10 +6,14 @@
         copy: no
 
    - name: 3.Renaming the maven unzip folder.
-     command: cp -r {{ maven_home_parent_directory }}/apache-maven-{{ maven_major }}/{{ maven_version }} /opt/maven
+     command: cp -r {{ maven_home_parent_directory }}/apache-maven-{{ maven_version }} /opt/maven
 
    - name: 4.Setting path for maven
-     copy: content="export M2_HOME=/opt/maven export PATH=${M2_HOME}/bin:${PATH}" dest=/etc/profile
+     blockinfile:
+        path: /etc/profile
+        block: |
+          export M2_HOME=/opt/maven 
+          export PATH=${M2_HOME}/bin:${PATH}
 
    - name: 5.Source the /etc/profile
      shell: "source /etc/profile"
