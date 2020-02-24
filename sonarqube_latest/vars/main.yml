@@ -5,5 +5,6 @@ sonar_download_url: https://binaries.sonarsource.com/Distribution/sonarqube/{{so
 sonar_install_directory: /opt/
 sonarqube: "{{ sonar_install_directory }}/sonarqube-{{ sonar_version }}"
 sonar_daemon_dir: "{{ sonar_install_directory }}sonarqube-{{ sonar_version }}/bin/linux-x86-64/"
-sonar_user: ansadm
-sonar_group: ansadm
+####chnage this part###############
+sonar_user: ansadm      #Your_Username
+sonar_group: ansadm     #Your_Group_name
