@@ -1,5 +1,9 @@
 ---
-- hosts: client2    #Change the host name
+- vars_prompt:
+        name: host
+        prompt: "On Which Hosts:"
+        private: no
+  hosts: "{{host}}"
   become: yes
   roles:
   - swap
