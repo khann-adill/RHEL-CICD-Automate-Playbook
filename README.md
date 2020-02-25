@@ -1,6 +1,6 @@
 #               Ansible_Playbook
 
-You Can Clone a Repo Into Your Local Machine: 
+You Can Clone a Repo Into Your Local Machine : 
 git clone https://github.com/adil1806/Ansible_Playbook.git
 
 # Installation_Ansible_On_RHElv8.1
@@ -11,9 +11,9 @@ git clone https://github.com/adil1806/Ansible_Playbook.git
    passwd ansadm
 4. Switch to ansadm user
 5. ip install ansible --user
-6. udo yum -y install https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.oarch.rpm
-7. udo yum install ansible
-8. nsible --version
+6. sudo yum -y install https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.oarch.rpm
+7. sudo yum install ansible
+8. ansible --version
 
 # Contributing
 1. Fork it!
