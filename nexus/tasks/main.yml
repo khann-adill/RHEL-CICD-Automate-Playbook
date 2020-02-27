@@ -1,0 +1,30 @@
+---
+   - name: Download Zip and Unzip.
+     yum:
+       name: [zip, unzip]
+       state: present
+       
+   - name: Download the Nexus file.
+     get_url:
+         url: "{{nexus_url}}"
+         dest: "{{Download_folder}}"
+
+   - name: Changing Permission of nexus file.
+     command: chmod 777 {{Download_folder}}/nexus-{{nexus_version}}-bundle.zip
+
+   - name: Unzipping it.
+     unarchive:
+       src: /opt/nexus-{{nexus_version}}-bundle.zip
+       dest: /opt
+       remote_src: yes 
+       
+   - name: "Remove Nexus Archive"
+     file:
+        path: "{{Download_folder}}/nexus-{{nexus_version}}-bundle.zip"
+        state: absent  
+       
+   - name: Now running nexus.
+     shell: RUN_AS_USER=root /opt/nexus-{{nexus_version}}/bin/nexus start
+     register: result
+
+   - debug: var=result.stdout

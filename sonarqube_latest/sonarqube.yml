@@ -1,0 +1,9 @@
+---
+-  vars_prompt:
+        name: host
+        prompt: "On Which Hosts:"
+        private: no
+   hosts: "{{host}}"
+   become: yes
+   roles:
+   - sonarqube_latest

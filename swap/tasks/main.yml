@@ -1,0 +1,28 @@
+---
+    - name: Creating a swap file size of 4GB using dd command.
+      shell: dd if={{input_file}} of={{output_file}} bs={{bytes}} count={{count}}
+
+    - name: Wait until the file /mnt/swapfile is present before continuing.
+      wait_for:
+         path: "{{output_file}}"
+
+    - name: Set permission on the file by using below command, make it readable only by root user.
+      file:
+        dest: "{{output_file}}"
+        mode: 600
+
+    - name: Using mkswap command and set up file for swap space.
+      shell: mkswap {{output_file}}
+
+    - name: Swapnon
+      shell: swapon {{output_file}}
+
+    - name: Enable the swap file and add it to the system as a swap file.
+      blockinfile:
+          path: "{{swap_file}}"
+          block: |
+             /swapfile           swap     swap    default  0 0
+             /mnt/swapfile   swap    swap    defaults 0 0
+
+    - name: Mounting
+      shell: mount -a

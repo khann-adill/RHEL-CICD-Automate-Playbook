@@ -1,0 +1,5 @@
+---
+- hosts: client1
+  become: yes
+  roles:
+  - tomcat
