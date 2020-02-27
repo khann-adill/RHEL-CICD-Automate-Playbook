@@ -1,7 +1,0 @@
----
-# vars file for swapping
-input_file: /dev/zero
-output_file: /mnt/swapfile
-swap_file: /etc/fstab
-bytes: 1024
-count: 4097152      #Size of Swap Memory Wants to Create

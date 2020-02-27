@@ -1,5 +1,0 @@
----
-tomcat_version: 9.0.31
-tomcat_dest: /opt/
-tomcat_url: http://mirrors.estointernet.in/apache/tomcat/tomcat-{{tomcat_version.split('.')[0]}}/v{{tomcat_version}}/bin/apache-tomcat-{{tomcat_version}}.tar.gz
-tomcat_port: 8090

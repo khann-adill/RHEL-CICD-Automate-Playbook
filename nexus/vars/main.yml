@@ -1,4 +1,0 @@
----
-nexus_version: 2.14.16-01
-nexus_url: http://www.sonatype.org/downloads/nexus-{{nexus_version}}-bundle.zip
-Download_folder: /opt
