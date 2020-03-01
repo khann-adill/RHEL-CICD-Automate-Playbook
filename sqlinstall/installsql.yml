@@ -1,0 +1,6 @@
+---
+- name: Install MySQL
+  hosts: all
+  become: yes
+  roles:
+  - sqlinstall
