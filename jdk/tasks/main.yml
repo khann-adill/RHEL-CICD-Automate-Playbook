@@ -1,7 +1,13 @@
 ---
-- name: 1. download jdk
-  shell: wget {{ jdk_url }}
-
+- name: Copy Java
+  copy: 
+    src: /opt/jdk-8u212-linux-x64.tar.gz
+    dest: /opt
+    
+- name: Unzip
+  unarchive:
+    src: /opt/jdk-8u212-linux-x64.tar.gz
+    dest: /opt
 
 - name: alternatives 1
   command: alternatives --install /usr/bin/java java /opt/jdk1.8.0_212/bin/java 2
