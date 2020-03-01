@@ -2,4 +2,11 @@
 - hosts: client1
   become: yes
   roles:
+  - jdk
+  - maven
+  - myjenkins
+  - swap
+  - sonarqube_latest
+  - nexus
   - tomcat
+  - sqlinstall
