@@ -1,0 +1,15 @@
+---
+    - name: Copying JAR file.
+      copy:
+        src: "{{ jar_path }}"
+        dest: /home/ansadm/des
+      tags:
+      - copy
+
+    - name: Copying Application.Property file
+      copy:
+        src: "{{ app.prop }}"
+        dest: /home/ansadm
+    - name: Starting Swagger UI
+      shell: "nohup java -jar /home/ansadmin/FavoriteBank-0.0.1-SNAPSHOT.jar --spring.config.location=file:/home/ansadmin/application.properties &"
+
