@@ -1,0 +1,4 @@
+Using this Playbook MySQL will be installed.
+Then we have to manually set root password for MySQL
+using this command:
+mysql_secure_installation (Y,Low,Yes,then all NO)
