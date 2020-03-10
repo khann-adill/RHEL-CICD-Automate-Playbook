@@ -11,6 +11,14 @@
      service:
          name: mysqld
          state: started
+         
+   - name: Install python
+     yum:
+       name: python
+       state: present
+       
+   - name: Install pip
+     shell:  python3 -m pip install --upgrade pip
 
    - name: Install PyMySQL Which is Required by DB Module of Ansible
      shell: python3 -m pip install PyMySQL 
