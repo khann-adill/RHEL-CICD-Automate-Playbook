@@ -2,7 +2,7 @@
      shell: wget https://repo.mysql.com/mysql80-community-release-el8-1.noarch.rpm
 
    - name: LocalInstall
-     shell: yum localinstall mysql80-community-release-el8-1.noarch.rpm --allowerasing
+     shell: yum localinstall mysql80-community-release-el8-1.noarch.rpm -y
 
    - name: Install mysql-server.
      shell: yum install mysql-server mysql -y
