@@ -13,23 +13,4 @@
          state: started
 
    - name: Install PyMySQL Which is Required by DB Module of Ansible
-     shell: python3 -m pip install PyMySQL
-
-   - name: Add Database User With all database privileges and 'WITH GRANT OPTION'
-     mysql_user:
-           login_user: "{{root_user}}"
-           login_password: "{{root_pass}}"
-           name: "{{db_user}}"
-           password: "{{db_pass}}"
-           priv: '*.*:ALL,GRANT'
-     tags:
-     - adduser
-
-   - name: Create a new database with name 'ingdatabase'
-     mysql_db:
-          login_user: "{{db_user}}"
-          login_password: "{{db_pass}}"
-          name: ingdatabaseNew
-          state: present
-     tags:
-     - adddb
+     shell: python3 -m pip install PyMySQL 
