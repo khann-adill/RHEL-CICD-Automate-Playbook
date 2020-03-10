@@ -14,7 +14,7 @@
          
    - name: Install python
      yum:
-       name: python
+       name: python3
        state: present
        
    - name: Install pip
