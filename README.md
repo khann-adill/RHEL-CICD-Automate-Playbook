@@ -18,7 +18,7 @@ git clone https://github.com/adil1806/Ansible_Playbook.git
 8. ansible --version
 
 # Contributing
-1. Fork it!
+1. Fork it! Using URL: https://github.com/adil1806/RHEL-CICD-Automate-Playbook.git
 2. Create your feature branch: git checkout -b my-new-feature
 3. Commit your changes: git commit -am 'Add some feature'
 4. Push to the branch: git push origin my-new-feature
