@@ -23,3 +23,8 @@ git clone https://github.com/adil1806/Ansible_Playbook.git
 3. Commit your changes: git commit -am 'Add some feature'
 4. Push to the branch: git push origin my-new-feature
 5. Submit a pull request
+
+# For AWS provisioning using Ansible 
+Go to my repo github.com/adil1806/aws_ansible
+This playbook use to gather info of EC2 Instance like Instance_Id, Image_Id, Key_Name and save the info in CSV format File.
+And it will create S3 Bucket and push the object in that Bucket.
