@@ -5,7 +5,7 @@ git clone https://github.com/adil1806/Ansible_Playbook.git
 
 # Installation_Ansible_On_RHElv8.1
 1. sudo yum install python3
-2. pip3 install --upgrade pip3
+2. pip3 install --upgrade pip
 3. Create a User on ansible master machine
    
    adduser ansadm
