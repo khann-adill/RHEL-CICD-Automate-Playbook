@@ -13,7 +13,7 @@ git clone https://github.com/adil1806/Ansible_Playbook.git
    passwd ansadm
 4. Switch to ansadm user
 5. pip3 install ansible --user
-6. sudo yum -y install https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.oarch.rpm
+6. sudo dnf install https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm
 7. sudo yum install ansible
 8. ansible --version
 
