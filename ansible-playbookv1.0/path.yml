@@ -1,7 +1,7 @@
 ---
 
 - name: Path Demo
-  hosts: myserver
+  hosts: localhost
   become: yes
   gather_facts: false
   vars:
