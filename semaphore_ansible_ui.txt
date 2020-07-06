@@ -1,0 +1,54 @@
+1. dnf update -y
+2. dnf install -y mariadb-server
+3. systemctl enable --now mariadb.service
+4. mysql_secure_installation
+	Enter current password for root (enter for none): nothing to press
+	Set root password? [Y/n] Y
+	Remove anonymous users? [Y/n] Y
+	Disallow root login remotely? [Y/n] Y
+	Reload privilege tables now? [Y/n] Y
+Thanks for using MariaDB!
+5. Now install Ansible
+6. dnf install -y git wget
+7. wget https://github.com/ansible-semaphore/semaphore/releases/download/v2.5.1/semaphore_2.5.1_linux_amd64.rpm
+dnf install -y semaphore_2.5.1_linux_amd64.rpm
+8. semaphore -version
+9. semaphore -setup
+ > DB Hostname (default 127.0.0.1:3306): 127.0.0.1:3306
+ > DB User (default root): root
+ > DB Password: 123
+ > DB Name (default semaphore): semaphore
+ > Playbook path (default /tmp/semaphore): /opt/semaphore
+ > Web root URL (optional, example http://localhost:8010/): http://localhost:8010/
+ > Enable email alerts (y/n, default n): n
+ > Enable telegram alerts (y/n, default n): n
+ > Enable LDAP authentication (y/n, default n): n
+after this it will show something
+> Is this correct? (yes/no): yes
+> Config output directory (default /root): /etc/semaphore
+> Username: adil
+ > Email: adil@gmail.com
+WARN[0126] sql: no rows in result set                    level=Warn
+ > Your name: Adil Khan
+ > Password: 123
+
+
+10. vi /usr/lib/systemd/system/semaphore.service
+Add following directives in this file.
+[Unit]
+Description=Semaphore Ansible UI
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=simple
+ExecReload=/bin/kill -HUP $MAINPID
+ExecStart=/usr/bin/semaphore -config /etc/semaphore/config.json
+SyslogIdentifier=semaphore
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
+11. systemctl enable --now semaphore.service
+12. systemctl status semaphore
+To access Semaphore web interface, browse URL http://<ip>:3000 in Google Chrome.
