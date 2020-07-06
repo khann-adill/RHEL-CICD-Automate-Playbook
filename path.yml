@@ -1,7 +1,7 @@
 ---
 
 - name: Path Demo
-  hosts: inventory_1
+  hosts: myserver
   become: yes
   gather_facts: false
   vars:
