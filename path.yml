@@ -1,0 +1,25 @@
+---
+
+- name: Path Demo
+  hosts: localhost
+  become: yes
+  gather_facts: false
+  vars:
+     path: /opt
+  tasks:
+
+     - name: stat of /opt dir
+       stat:
+          path={{ path }}/bin-ansible
+       register: out
+
+     - name: Shell Module
+       shell: touch "$(hostname)"_by_sm.test
+       args:
+         chdir: "{{ path }}"
+       when: out.stat.exists
+
+     - name: Command Module
+       shell: touch "$(hostname)"_by_cm.test
+       args:
+          chdir: "{{ path }}"
