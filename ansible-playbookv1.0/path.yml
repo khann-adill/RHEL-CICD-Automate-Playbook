@@ -1,7 +1,7 @@
 ---
 
 - name: Path Demo
-  hosts: myserver
+  hosts: localhost
   become: yes
   gather_facts: false
   vars:
@@ -10,7 +10,7 @@
 
      - name: stat of /opt dir
        stat:
-          path={{ path }}/bin-ansible
+          path="{{ path }}"/bin_ansible
        register: out
 
      - name: Shell Module
