@@ -1,0 +1,48 @@
+# tasks file for generate-ssh-keys
+---
+- hosts: appserver
+  vars:
+    generate_ssh_keys_key_bits: 4096
+    generate_ssh_keys_key_type: ed25519
+    generate_ssh_keys_key_state: present
+    user_account: khan
+    appserver: ec2-3-19-30-66.us-east-2.compute.amazonaws.com
+  tasks:
+
+     - name: Create user account on Master Server
+       user:
+         name: "{{ user_account }}"
+       delegate_to: localhost
+       become: true
+
+     - name: Generate SSH keypair on master server
+       user:
+         name: "{{ user_account }}"
+         generate_ssh_key: yes
+         ssh_key_bits: "{{ generate_ssh_keys_key_bits }}"
+         ssh_key_type: "{{ generate_ssh_keys_key_type }}"
+       become: true
+       delegate_to: localhost
+       register: master_user
+     - debug: msg"{{master_user.home}}"
+
+     - name: Push public ssh key from master to client
+       copy:
+         src: "{{ master_user.home }}/.ssh/id_{{ generate_ssh_keys_key_type }}.pub"
+         dest: "/tmp"
+       delegate_to: localhost
+       become: true
+
+     - name: Create user account on client server
+       user:
+         name: "{{ user_account }}"
+       become: true
+
+     - name: Add ssh client's authorized_key to ssh server
+       authorized_key:
+           user: "{{ user_account }}"
+           state: "{{ generate_ssh_keys_key_state }}"
+           key: "{{ lookup('file', '/tmp/id_{{ generate_ssh_keys_key_type }}.pub') }}"
+       become: true
+       become_user: "{{ user_account }}"
+
