@@ -1,0 +1,43 @@
+---
+- hosts: localhost
+  become: yes
+  vars:
+     user: ec2-user
+  tasks:
+     - name: Downloading tava tar file
+       get_url:
+         url: https://download.java.net/java/GA/jdk10/10.0.2/19aef61b38124481863b1413dce1855f/13/openjdk-10.0.2_linux-x64_bin.tar.gz
+         dest: /opt/jdk
+         mode: 644
+       become: yes
+
+     - name: untar the file
+       unarchive:
+          src: /opt/jdk/openjdk-10.0.2_linux-x64_bin.tar.gz
+          dest: /opt/jdk
+          remote_src: yes
+     
+     - name: creating link
+       shell: sudo alternatives --install /usr/bin/java java /opt/jdk/jdk-10.0.2/bin/java 200000
+
+     - name: alternatives set
+       alternatives:
+          name: java
+          path: /opt/jdk/jdk-10.0.2/bin/java
+
+     - name: set JAVA_home in bash profile
+       lineinfile:
+               path: "/home/{{ user }}/.bash_profile"
+               regexp: '^export JAVA_HOME='
+               line: export JAVA_HOME=/opt/jdk/jdk-10.0.2/
+               owner: ec2-user
+               group: ec2-user
+       become_user: ec2-user
+       tags:
+          - path
+
+     - name: source bash profile
+       shell: source /home/ec2-user/.bash_profile
+       become_user: ec2-user
+       args:
+        executable: /bin/bash

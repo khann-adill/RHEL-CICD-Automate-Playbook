@@ -1,0 +1,56 @@
+---
+- hosts: localhost
+  gather_facts: false
+  vars:
+     version: "2020.1.2"
+     source_url: "https://download-cf.jetbrains.com/teamcity/TeamCity-{{ version }}.tar.gz"
+     install_path: "/opt/teamcity/"
+     mode: "644"
+     unarchive_src: "/opt/teamcity/TeamCity-{{ version }}.tar.gz"
+  tasks:
+
+  - name: Download Latest teamcity server {{ version }}
+    unarchive:
+       src: "{{ source_url }}"
+       dest: "{{ install_path }}"
+       copy: no
+    tags:
+      - install
+    
+  - name: Find my public ip
+    uri:
+     url: http://ifconfig.me/ip
+     return_content: yes
+    register: ip_response
+    tags:
+      - install
+
+  - name: Setting agent for teamcity
+    lineinfile:
+      path: /opt/teamcity/TeamCity/buildAgent/conf/buildAgent.properties
+      regexp: '^serverUrl='
+      regexp: "{{ item.exp }}"
+      line: serverUrl=http://{{ ip_response.content }}:8111/
+      line: "{{ item.line }}"
+    with_items:
+       - { exp: '^serverUrl=', line: "serverUrl=http://{{ ip_response.content }}:8111/" }
+       - { exp: '^name=', line: "name=testdemo-agent"}
+    tags: 
+      - install
+
+  - name: Starting Teamcity {{ version }} server
+    shell: sh teamcity-server.sh starti
+    args:
+      chdir: "{{ install_path }}/TeamCity/bin"
+    become: true
+    ignore_errors: true
+    tags:
+     - start_server
+
+  - name: Starting Teamcity {{ version }} agent
+    shell: sh agent.sh start
+    args:
+      chdir: "{{ install_path }}/Teamcity/buildagent/bin/"
+    tags:
+      - start_agent
+

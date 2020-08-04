@@ -1,0 +1,45 @@
+---
+- hosts: localhost
+  gather_facts: false
+  vars:
+     version: "9"
+     source_url: "https://download.java.net/java/GA/jdk9/9/binaries/openjdk-{{ version }}_linux-x64_bin.tar.gz"
+     install_path: "/home/ec2-user/jdk/"
+     mode: "644"
+     unarchive_src: "/home/ec2-user/jdk/openjdk-{{ version }}_linux-x64_bin.tar.gz"
+     latest_jdk: "/home/ec2-user/jdk/jdk-{{ version }}/bin/java"
+  tasks:
+     - name: Downloading tava tar file
+       get_url:
+         url: "{{ source_url }}"
+         dest: "{{ install_path}}"
+         mode: "{{ mode }}"
+         owner: ec2-user
+         group: ec2-user
+
+     - name: untar the file
+       unarchive:
+          src: "{{ unarchive_src}}"
+          dest: "{{ install_path}}"
+          remote_src: yes
+          owner: ec2-user
+          group: ec2-user
+
+     - name: creating link
+       command: "alternatives --install /usr/bin/java java {{ latest_jdk }} 200000"
+       become: true
+
+     - name: alternatives set
+       alternatives:
+          name: java
+          path: "{{ latest_jdk }}"
+       become: true
+       
+     - name: set JAVA_home in bash profile
+       lineinfile:
+               path: /home/ec2-user/.bash_profile
+               regexp: '^export JAVA_HOME='
+               line: export JAVA_HOME={{ latest_jdk }}
+               owner: ec2-user
+               group: ec2-user
+       become_user: ec2-user

@@ -1,0 +1,47 @@
+---
+- hosts: localhost
+  become: yes
+  vars:
+     version: "9.0.4"
+     #source_url: "https://download.java.net/java/GA/jdk13.0.1/cec27d702aa74d5a8630c65ae61e4305/9/GPL/openjdk-{{ version }}_linux-x64_bin.tar.gz"
+     source_url: "https://download.java.net/java/GA/jdk9/9.0.4/binaries/openjdk-{{ version }}_linux-x64_bin.tar.gz"
+     install_path: "/opt/jdk/"
+     mode: "644"
+     unarchive_src: "/opt/jdk/openjdk-{{ version }}_linux-x64_bin.tar.gz"
+     latest_jdk: "/opt/jdk/jdk-{{ version }}/bin/java"
+  tasks:
+     - name: Downloading tava tar file
+       get_url:
+         url: "{{ source_url }}"
+         dest: "{{ install_path}}"
+         mode: "{{ mode }}"
+       become: yes
+
+     - name: untar the file
+       unarchive:
+          src: "{{ unarchive_src}}"
+          dest: "{{ install_path}}"
+          remote_src: yes
+
+     - name: creating link
+       shell: "sudo alternatives --install /usr/bin/java java {{ latest_jdk }} 200000"
+
+     - name: alternatives set
+       alternatives:
+          name: java
+          path: "{{ latest_jdk }}"
+
+     - name: set JAVA_home in bash profile
+       lineinfile:
+               path: /home/ec2-user/.bash_profile
+               regexp: '^export JAVA_HOME='
+               line: export JAVA_HOME={{ latest_jdk }}
+               owner: ec2-user
+               group: ec2-user
+       become_user: ec2-user
+
+     - name: source bash profile
+       shell: source /home/ec2-user/.bash_profile
+       become_user: ec2-user
+       args:
+        executable: /bin/bash
