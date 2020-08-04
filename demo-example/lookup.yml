@@ -1,0 +1,15 @@
+---
+- hosts: localhost
+  vars:
+          #file: "{{ lookup('file', '/home/ec2-user/adil.txt', errors='ignore') }}"
+          #file: "{{ lookup('file', '/home/ec2-user/adil.txt', errors='warn') }}"
+          file: "{{ lookup('file', '/home/ec2-user/adil.txt', errors='strict') }}"
+  tasks:
+      - debug: 
+          msg: "file is {{ file }}"
+
+      - debug: msg="{{ lookup('env','HOME') }} is an environment variable"
+        
+      - debug: msg="{{ lookup('env','JAVA_HOME') }} is an environment variable"
+
+      - debug: msg="{{ ansible_env }}"

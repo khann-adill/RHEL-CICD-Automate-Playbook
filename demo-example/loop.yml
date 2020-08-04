@@ -1,0 +1,20 @@
+---
+- hosts: localhost
+  tasks:
+
+     - name: install wget vim
+       yum:    
+         name: "{{ item }}"
+         state: present
+       become: true
+       loop:
+          - wget
+          - vim
+
+     - name: With index number example
+       debug: 
+           msg: "echo loop index at 0 is {{ item.0 }} and 1 is {{ item.1}}"
+       with_indexed_items:
+                - "adil"
+                - "khan"
+

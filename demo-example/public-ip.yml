@@ -1,0 +1,15 @@
+---
+- hosts: localhost
+  gather_facts: yes
+  tasks:
+    - debug: var=ansible_all_ipv4_addresses
+    - debug: var=ansible_default_ipv4.address
+
+    - name: Find my public ip
+      uri:
+        url: http://ifconfig.me/ip
+        return_content: yes
+      register: ip_response
+    - debug: var=ip_response.content
+    - name: file
+      shell: echo {{ ip_response.content }} > file.name
