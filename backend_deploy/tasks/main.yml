@@ -1,5 +1,5 @@
 ---
-    - name: Copying JAR file.
+    - name: Copying JAR files.
       copy:
         src: "{{ jar_path }}"
         dest: /home/ansadm/des
