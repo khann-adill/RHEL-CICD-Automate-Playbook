@@ -1,0 +1,31 @@
+---
+ - hosts: localhost
+   become: yes
+   vars:
+     maven_major: 3
+     maven_version: 3.6.3
+     maven_home_parent_directory: /opt
+   tasks:
+   - name: Downloding the maven tar file and unarchive
+     unarchive:
+        src: "http://www.apache.org/dist/maven/maven-{{ maven_major }}/{{ maven_version }}/binaries/apache-maven-{{ maven_version }}-bin.tar.gz"
+        dest: "{{ maven_home_parent_directory }}"
+        copy: no
+
+   - name: Renaming the maven unzip folder.
+     command: cp -r {{ maven_home_parent_directory }}/apache-maven-{{ maven_version }} /opt/maven
+
+   - name: Setting path for maven
+     blockinfile:
+        path: /etc/profile
+        block: |
+          export M2_HOME=/opt/maven
+          export PATH=${M2_HOME}/bin:${PATH}
+
+   - name: softlink of maven_version
+     shell: "{{ item}}"
+     args:
+       executable: /bin/bash
+     with_items:
+       - sudo update-alternatives --install "/usr/bin/mvn" "mvn" "/opt/maven/bin/mvn" 0
+       - sudo update-alternatives --set mvn /opt/maven/bin/mvn
