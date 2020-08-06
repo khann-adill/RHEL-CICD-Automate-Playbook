@@ -9,7 +9,7 @@
      unarchive_src: "/home/ec2-user/jdk/openjdk-{{ version }}_linux-x64_bin.tar.gz"
      latest_jdk: "/home/ec2-user/jdk/jdk-{{ version }}/bin/java"
   tasks:
-     - name: Downloading tava tar file
+     - name: Downloading java tar file
        get_url:
          url: "{{ source_url }}"
          dest: "{{ install_path}}"
