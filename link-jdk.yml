@@ -1,0 +1,50 @@
+---
+- hosts: localhost
+  gather_facts: false
+  vars:
+     version: "11.0.1"
+     user: "ec2-user"
+     source_url: "https://download.java.net/java/GA/jdk11/13/GPL/openjdk-{{ version }}_linux-x64_bin.tar.gz"
+     install_path: "/home/{{ user }}/jdk"
+     mode: "0775"
+     unarchive_src: "/home/{{ user }}/jdk/openjdk-{{ version }}_linux-x64_bin.tar.gz"
+     link_name: "java.latest"
+  tasks:
+     - name: Downloading Java {{ version }} tar file
+       get_url:
+         url: "{{ source_url }}"
+         dest: "{{ install_path}}"
+         mode: "{{ mode }}"
+         owner: "{{ user }}"
+         group: "{{ user }}"
+
+
+     - name: Untar java {{ version }}
+       unarchive:
+          src: "{{ unarchive_src}}"
+          dest: "{{ install_path}}"
+          remote_src: yes
+          owner: "{{ user }}"
+          group: "{{ user }}"
+          mode: "{{ mode }}"
+
+     - name: Creating Symlink {{ install_path }}/jdk-{{ version }} --> {{ install_path }}/{{ link_name }}
+       file:
+         src: "{{ install_path }}/jdk-{{ version }}"
+         dest: "{{ install_path }}/{{ link_name }}"
+         owner: "{{ user }}"
+         group: "{{ user }}"
+         mode: "{{ mode }}"
+         state: link
+         force: yes
+
+     - name: set JAVA_home in bash profile
+       lineinfile:
+               path: "/home/{{ user }}/.bash_profile"
+               regexp: "{{ item.exp }}"
+               line: "{{ item.line }}"
+               owner: "{{ user }}"
+               group: "{{ user }}"
+       with_items:
+         - { exp: '^export JAVA_HOME=' , line:  "export JAVA_HOME={{ install_path }}/{{ link_name }}" }
+         - { exp: 'export PATH=$JAVA_HOME' , line: "export PATH=$JAVA_HOME/bin:$PATH" } 
