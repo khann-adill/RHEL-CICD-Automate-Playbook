@@ -1,0 +1,38 @@
+---
+- hosts: [server1]
+  name: To start Teamcity Server
+  gather_facts: false
+  tasks:
+   - name: Starting Teamcity
+     shell: ./teamcity-server.sh start &
+     args:
+       chdir: /opt/TeamCity/bin/
+     register: status
+   - pause:
+      seconds: 30
+
+   - name: Checking Teamcity running or not
+     shell: netstat -tulp | grep LISTEN | grep 8111 | awk '{print $4}'
+     register: tccheck
+
+   - set_fact:
+        tccheck: "{{ tccheck.stdout }}"
+   - debug: var=tccheck
+
+- name: server start
+  hosts: server2
+  tasks:
+
+    - set_fact:
+         status: "{{hostvars['server1']['tccheck']}}"
+
+    - debug: msg="{{status}}"
+
+    - name: step-2
+      file:
+         path: part2.txt
+         state: touch
+      failed_when: status != '[::]:8111'
+      register: file
+
+    - debug: msg="{{file}}"
