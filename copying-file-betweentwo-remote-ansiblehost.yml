@@ -1,0 +1,24 @@
+#This playbook will copy files between two ansible remote host.
+---
+- hosts: node1 node2
+  gather_facts: false
+  vars:
+    source: node1
+    target: node3
+    copy_path: /opt
+    copy_file: test.sh
+    copt_to: /opt/
+  name: To copy file between two remote server[node1 and node2]
+  tasks:
+    - name: To copy file from node1 to ansible controller server[master]
+      fetch:
+        src: "{{ copy_path }}/{{ copy_file }}"
+        dest: /tmp/
+        flat: yes
+      when: source|string is in inventory_hostname
+
+    - name: Copy the file from ansible controller server[master] to node2
+      copy:
+        src: "/tmp/{{ copy_file }}"
+        dest: /opt/
+      when: target|string is in inventory_hostname
