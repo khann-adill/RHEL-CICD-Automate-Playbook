@@ -1,0 +1,42 @@
+---
+- hosts: winhost
+  gather_facts: false
+  tasks:
+    - name: copy jdk software to remote host
+      win_copy: 
+         src: /opt/jdk-15.0.2_windows-x64_bin.exe
+         dest: C:\\tools\\
+
+    - name: install java
+      win_package:
+           path: C:\\tools\\jdk-15.0.2_windows-x64_bin.exe
+           product_id: jdk-15.0.2
+           state: present
+
+    - name: Add JAVA_HOME Env
+      win_path:
+          name: JAVA_HOME
+          elements: C:\Program Files\Java\jdk-15.0.2
+          scope: machine
+          state: present
+
+    - name: Add JAVA_BIN Env
+      win_path:
+          name: PATH
+          elements: C:\Program Files\Java\jdk-15.0.2\bin
+          scope: machine
+          state: present
+
+    - name: Reboot Windows Server
+      win_reboot:
+           msg: "Restart the server 3 seconds later"
+           post_reboot_delay: 3
+           test_command: whoami
+
+    - name: check jdk shell
+      win_shell: "java -version"
+      args:
+        executable: cmd
+      register: java_version
+
+    - debug: msg="{{java_version.stderr_lines}}"
