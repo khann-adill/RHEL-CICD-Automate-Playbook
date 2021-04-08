@@ -5,6 +5,6 @@
     - name: Installing nginx
       apt:
         name: nginx
-        state: present
+        state: absent
     - debug: 
         msg: Installed..!
