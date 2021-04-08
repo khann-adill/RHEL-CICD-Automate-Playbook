@@ -6,3 +6,5 @@
       apt:
         name: nginx
         state: present
+    - debug: 
+        msg: Installed..!
