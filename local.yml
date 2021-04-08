@@ -1,0 +1,8 @@
+---
+- hosts: localhost
+  become: true
+  tasks:
+    - name: Installing nginx
+      apt:
+        name: nginx
+        state: present
